@@ -1,0 +1,222 @@
+---
+title: "DatathonSampleModelsParasitic"
+author: "RG"
+date: "April 13, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Packages
+library(knitr)
+library(tidyverse)
+library(rethinking)
+library(dplyr)
+
+abs_file_path <- "C:/Users/Richard/Desktop/10DataSets/"
+data_all1 <- read.csv(paste(abs_file_path, "Datathon_dataset_Parasitic.csv", sep = ""))
+data_all <- sample_n(data_all1, 1000)
+
+
+datFrame <- data.frame("var1" = data_all$technology_and_connectivity__science__new_tech_enthusiasts, "var2" = data_all$technology_and_connectivity__electronics_enthusiast, "var3" = data_all$technology_and_connectivity__stream_music, "var4" = data_all$technology_and_connectivity__stream_videos, "var5" = data_all$technology_and_connectivity__online_gamers, "var6" = data_all$technology_and_connectivity__smart_phone_owners, "var7" = data_all$technology_and_connectivity__download_videos, "var8" = data_all$services_software_and_online_services__graphic_design_software_paid_users, "var9" = data_all$services_software_and_online_services__genealogy_research_service_paid_users, "var10" = data_all$services_software_and_online_services__graphic_design_software_paid_users, "logParasitic" = log(data_all$parasitic + .0001))
+
+
+dat <- na.omit(datFrame)
+
+```
+
+
+```{r, results="hide"}
+
+
+# model with all variables
+m1a <- map2stan(
+    alist(
+        logParasitic ~ dnorm( mu, sigma ),
+        mu <- alpha + beta1 * var1 + beta2 * var2 + beta3 * var3 + beta4 * var4 + beta5 * var5 + beta6*var6 + beta7*var7 + beta8*var8 + beta9*var9 + beta10*var10, 
+        alpha ~ dnorm(0, 1),         
+        beta1 ~ dnorm(0, 1), 
+        beta2 ~ dnorm(0, 1),
+        beta3 ~ dnorm(0, 1),
+        beta4 ~ dnorm(0, 1),
+        beta5 ~ dnorm(0, 1),
+        beta6 ~ dnorm(0, 1),
+        beta7 ~ dnorm(0, 1),
+        beta8 ~ dnorm(0, 1),
+        beta9 ~ dnorm(0, 1),
+        beta10 ~ dnorm(0, 1),
+        sigma ~ dcauchy(0, .5)
+    ) ,
+    data = dat, iter = 1000 , chains = 2  )
+
+precis(m1a)
+
+# model with 9 variables
+
+m1b <- map2stan(
+    alist(
+        logParasitic ~ dnorm( mu, sigma ),
+        mu <- alpha + beta1 * var1 + beta2 * var2 + beta3 * var3 + beta4 * var4 + beta5 * var5 + beta6*var6 + beta7*var7 + beta8*var8 + beta9*var9, 
+        alpha ~ dnorm(0, 1),         
+        beta1 ~ dnorm(0, 1), 
+        beta2 ~ dnorm(0, 1),
+        beta3 ~ dnorm(0, 1),
+        beta4 ~ dnorm(0, 1),
+        beta5 ~ dnorm(0, 1),
+        beta6 ~ dnorm(0, 1),
+        beta7 ~ dnorm(0, 1),
+        beta8 ~ dnorm(0, 1),
+        beta9 ~ dnorm(0, 1),
+        sigma ~ dcauchy(0, .5)
+    ) ,
+    data = dat, iter = 1000 , chains = 2  )
+
+precis(m1b)
+
+# model with 8 variables
+
+m1c <- map2stan(
+    alist(
+        logParasitic ~ dnorm( mu, sigma ),
+        mu <- alpha + beta1 * var1 + beta2 * var2 + beta3 * var3 + beta4 * var4 + beta5 * var5 + beta6*var6 + beta7*var7 + beta8*var8, 
+        alpha ~ dnorm(0, 1),         
+        beta1 ~ dnorm(0, 1), 
+        beta2 ~ dnorm(0, 1),
+        beta3 ~ dnorm(0, 1),
+        beta4 ~ dnorm(0, 1),
+        beta5 ~ dnorm(0, 1),
+        beta6 ~ dnorm(0, 1),
+        beta7 ~ dnorm(0, 1),
+        beta8 ~ dnorm(0, 1),
+        sigma ~ dcauchy(0, .5)
+    ) ,
+    data = dat, iter = 1000 , chains = 2  )
+
+precis(m1c)
+
+# model with 7 variables
+
+m1d <- map2stan(
+    alist(
+        logParasitic ~ dnorm( mu, sigma ),
+        mu <- alpha + beta1 * var1 + beta2 * var2 + beta3 * var3 + beta4 * var4 + beta5 * var5 + beta6*var6 + beta7*var7, 
+        alpha ~ dnorm(0, 1),         
+        beta1 ~ dnorm(0, 1), 
+        beta2 ~ dnorm(0, 1),
+        beta3 ~ dnorm(0, 1),
+        beta4 ~ dnorm(0, 1),
+        beta5 ~ dnorm(0, 1),
+        beta6 ~ dnorm(0, 1),
+        beta7 ~ dnorm(0, 1),
+        sigma ~ dcauchy(0, .5)
+    ) ,
+    data = dat, iter = 1000 , chains = 2  )
+
+precis(m1d)
+
+# model with 6 variables
+
+m1e <- map2stan(
+    alist(
+        logParasitic ~ dnorm( mu, sigma ),
+        mu <- alpha + beta1 * var1 + beta2 * var2 + beta3 * var3 + beta4 * var4 + beta5 * var5 + beta6*var6, 
+        alpha ~ dnorm(0, 1),         
+        beta1 ~ dnorm(0, 1), 
+        beta2 ~ dnorm(0, 1),
+        beta3 ~ dnorm(0, 1),
+        beta4 ~ dnorm(0, 1),
+        beta5 ~ dnorm(0, 1),
+        beta6 ~ dnorm(0, 1),
+        sigma ~ dcauchy(0, .5)
+    ) ,
+    data = dat, iter = 1000 , chains = 2  )
+
+precis(m1e)
+
+# model with 5 variables
+
+m1f <- map2stan(
+    alist(
+        logParasitic ~ dnorm( mu, sigma ),
+        mu <- alpha + beta1 * var1 + beta2 * var2 + beta3 * var3 + beta4 * var4 + beta5 * var5, 
+        alpha ~ dnorm(0, 1),         
+        beta1 ~ dnorm(0, 1), 
+        beta2 ~ dnorm(0, 1),
+        beta3 ~ dnorm(0, 1),
+        beta4 ~ dnorm(0, 1),
+        beta5 ~ dnorm(0, 1),
+        sigma ~ dcauchy(0, .5)
+    ) ,
+    data = dat, iter = 1000 , chains = 2  )
+
+precis(m1f)
+
+# model with 4 variables
+
+m1g <- map2stan(
+    alist(
+        logParasitic ~ dnorm( mu, sigma ),
+        mu <- alpha + beta1 * var1 + beta2 * var2 + beta3 * var3 + beta4 * var4, 
+        alpha ~ dnorm(0, 1),         
+        beta1 ~ dnorm(0, 1), 
+        beta2 ~ dnorm(0, 1),
+        beta3 ~ dnorm(0, 1),
+        beta4 ~ dnorm(0, 1),
+        sigma ~ dcauchy(0, .5)
+    ) ,
+    data = dat, iter = 1000 , chains = 2  )
+
+precis(m1g)
+
+# model with 3 variables
+
+m1h <- map2stan(
+    alist(
+        logParasitic ~ dnorm( mu, sigma ),
+        mu <- alpha + beta1 * var1 + beta2 * var2 + beta3 * var3, 
+        alpha ~ dnorm(0, 1),         
+        beta1 ~ dnorm(0, 1), 
+        beta2 ~ dnorm(0, 1),
+        beta3 ~ dnorm(0, 1),
+        sigma ~ dcauchy(0, .5)
+    ) ,
+    data = dat, iter = 1000 , chains = 2  )
+
+precis(m1h)
+
+# model with 2 variables
+
+m1i <- map2stan(
+    alist(
+        logParasitic ~ dnorm( mu, sigma ),
+        mu <- alpha + beta1 * var1 + beta2 * var2, 
+        alpha ~ dnorm(0, 1),         
+        beta1 ~ dnorm(0, 1), 
+        beta2 ~ dnorm(0, 1),
+        sigma ~ dcauchy(0, .5)
+    ) ,
+    data = dat, iter = 1000 , chains = 2  )
+
+precis(m1i)
+
+# model with 1 variable
+
+m1j <- map2stan(
+    alist(
+        logParasitic ~ dnorm( mu, sigma ),
+        mu <- alpha + beta1 * var1, 
+        alpha ~ dnorm(0, 1),         
+        beta1 ~ dnorm(0, 1), 
+        sigma ~ dcauchy(0, .5)
+    ) ,
+    data = dat, iter = 1000 , chains = 2  )
+
+precis(m1j)
+
+
+compare(m1a,m1b,m1c,m1d,m1e,m1f,m1g,m1h,m1i,m1j)
+
+```
